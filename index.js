@@ -6,7 +6,16 @@
  * @returns {boolean} whether the wizard can cast the spell
  */
 function canCastSpell(isSpellPrepared, hasScroll) {
-  // TODO
+  // No matter what, if have scroll, can cast
+  if (hasScroll) {
+    return true;
+  }
+  // If we're here, we don't have scroll. Need to know if prepared.
+  if (isSpellPrepared) {
+    return true;
+  }
+  // If we're here, we don't have scroll nor are prepared.
+  return false;
 }
 
 /**
@@ -17,7 +26,10 @@ function canCastSpell(isSpellPrepared, hasScroll) {
  * @returns {boolean} whether the creature is hidden from the observer
  */
 function isHidden(hiding, aware) {
-  // TODO
+  if (hiding || aware) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -28,7 +40,10 @@ function isHidden(hiding, aware) {
  * @returns {boolean} whether the strike hits
  */
 function doesStrikeHit(attack, ac) {
-  // TODO
+  if (attack >= ac) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -39,7 +54,11 @@ function doesStrikeHit(attack, ac) {
  * @returns {boolean} whether the strike is a critical hit
  */
 function doesStrikeCrit(attack, ac) {
-  // TODO
+  // attack: 32, AC: 20, expression 32 - 20 = 12, 12 >= 10 yes
+  if (attack - ac >= 10) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -51,7 +70,11 @@ function doesStrikeCrit(attack, ac) {
  * @returns {number} total hit points after healing
  */
 function heal(maxHp, currentHp, healAmount) {
-  // TODO
+  // If the both added is more than max, return max. Otherwise, return hp healed
+  if (currentHp + healAmount > maxHp) {
+    return maxHp;
+  }
+  return currentHp + healAmount;
 }
 
 /**
@@ -71,7 +94,20 @@ function heal(maxHp, currentHp, healAmount) {
  * @returns {number} the character's proficiency bonus
  */
 function getProficiencyBonus(level, rank) {
-  // TODO
+  // Don't need else if due to returns
+  if (rank == "trained") {
+    return level + 2;
+  }
+  if (rank == "expert") {
+    return level + 4;
+  }
+  if (rank == "master") {
+    return level + 6;
+  }
+  if (rank == "legendary") {
+    return level + 8;
+  }
+  return 0;
 }
 
 /**
@@ -85,7 +121,14 @@ function getProficiencyBonus(level, rank) {
  * @returns {number} the cover bonus to AC
  */
 function getCoverBonus(behindObstacle, takingCover) {
-  // TODO
+  if (!behindObstacle) {
+    return 0;
+  }
+  if (behindObstacle && takingCover) {
+    return 4;
+  }
+  // If behind obstacle but not taking cover. We don't care about not behind but taking cover
+  return 2;
 }
 
 /**
@@ -101,7 +144,13 @@ function getCoverBonus(behindObstacle, takingCover) {
  * @returns {number} the creature's remaining HP after taking damage
  */
 function getRemainingHp(maxHp, currentHp, damage) {
-  // TODO
+  if (damage >= 2 * maxHp) {
+    return -1;
+  }
+  if (currentHp - damage <= 0) {
+    return 0;
+  }
+  return currentHp - damage;
 }
 
 /**
@@ -113,7 +162,16 @@ function getRemainingHp(maxHp, currentHp, damage) {
  * @returns {boolean} whether the creature can see
  */
 function canSee(light, vision) {
-  // TODO
+  if (vision === "dark" || light === "bright") {
+    return true;
+  }
+  // Now vision can't be dark and light can't be bright
+  if (vision === "low-light" && light !== "dark") {
+    return true;
+  }
+  // Now vision can't be low-light because dark was done and low-light was tested with bright and dim
+  // This leaves vision of average, and since light can't be bright, any combination will fail.
+  return false;
 }
 
 /**
@@ -127,5 +185,19 @@ function canSee(light, vision) {
  * @returns {number} damage dealt by the strike
  */
 function getStrikeDamage(attack, ac, damage) {
-  // TODO
+  if (doesStrikeHit(attack, ac)) {
+    if (doesStrikeCrit(attack, ac)) {
+      return damage * 2;
+    }
+    // hit no crit
+    return damage;
+  }
+  // didn't hit
+  return 0;
 }
+
+// IIFE to test
+(function testCode() {
+  //TODO Write code to test and log each function
+  console.log("To be continued...");
+})();
