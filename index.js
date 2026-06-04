@@ -89,6 +89,7 @@ function getProficiencyBonus(level, rank) {
   if (rank == "legendary") {
     return level + 8;
   }
+  // 0 instead of level?
   return 0;
 }
 
@@ -129,10 +130,12 @@ function getRemainingHp(maxHp, currentHp, damage) {
   if (damage >= 2 * maxHp) {
     return -1;
   }
-  if (currentHp - damage <= 0) {
-    return 0;
-  }
-  return currentHp - damage;
+  // This should hanndle negative hp as well...
+  return Math.max(currentHp - damage, 0);
+  // if (currentHp - damage <= 0) {
+  //   return 0;
+  // }
+  // return currentHp - damage;
 }
 
 /**
@@ -144,6 +147,7 @@ function getRemainingHp(maxHp, currentHp, damage) {
  * @returns {boolean} whether the creature can see
  */
 function canSee(light, vision) {
+  // console.log(`light: ${light}, vision: ${vision}`);
   if (vision === "dark" || light === "bright") {
     return true;
   }
@@ -167,6 +171,7 @@ function canSee(light, vision) {
  * @returns {number} damage dealt by the strike
  */
 function getStrikeDamage(attack, ac, damage) {
+  console.log(`attack: ${attack}, ac: ${ac}, damage: ${damage}`);
   if (doesStrikeHit(attack, ac)) {
     if (doesStrikeCrit(attack, ac)) {
       return damage * 2;
@@ -180,6 +185,65 @@ function getStrikeDamage(attack, ac, damage) {
 
 // IIFE to test
 (function testCode() {
-  //TODO Write code to test and log each function
-  console.log("To be continued...");
+  console.log("----- canCastSpell -----");
+  console.log(canCastSpell(false, false));
+  console.log(canCastSpell(false, true));
+  console.log(canCastSpell(true, false));
+  console.log(canCastSpell(true, true));
+
+  console.log("----- isHidden -----");
+  console.log(isHidden(false, false));
+  console.log(isHidden(false, true));
+  console.log(isHidden(true, false));
+  console.log(isHidden(true, true));
+
+  console.log("----- doesStrikeHit -----");
+  console.log(doesStrikeHit(10, 10));
+  console.log(doesStrikeHit(10, 9));
+  console.log(doesStrikeHit(10, 11));
+
+  console.log("----- doesStrikeCrit -----");
+  console.log(doesStrikeCrit(20, 10));
+  console.log(doesStrikeCrit(20, 11));
+  console.log(doesStrikeCrit(20, 9));
+
+  console.log("----- heal -----");
+  console.log(heal(100, 50, 30));
+  console.log(heal(100, 50, 80));
+
+  console.log("----- getProficiencyBonus -----");
+  console.log(getProficiencyBonus(10, "untrained"));
+  console.log(getProficiencyBonus(10, "trained"));
+  console.log(getProficiencyBonus(10, "expert"));
+  console.log(getProficiencyBonus(10, "master"));
+  console.log(getProficiencyBonus(10, "legendary"));
+
+  console.log("----- getCoverBonus -----");
+  console.log(getCoverBonus(false, false));
+  console.log(getCoverBonus(false, true));
+  console.log(getCoverBonus(true, false));
+  console.log(getCoverBonus(true, true));
+
+  console.log("----- getRemainingHp ------");
+  console.log(getRemainingHp(100, 50, 25));
+  console.log(getRemainingHp(100, 50, 60));
+  console.log(getRemainingHp(100, 50, 200));
+
+  console.log("----- canSee ------");
+  console.log(canSee("bright", "average"));
+  console.log(canSee("bright", "low-light"));
+  console.log(canSee("bright", "dark"));
+  console.log(canSee("dim", "average"));
+  console.log(canSee("dim", "low-light"));
+  console.log(canSee("dim", "dark"));
+  console.log(canSee("dark", "average"));
+  console.log(canSee("dark", "low-light"));
+  console.log(canSee("dark", "dark"));
+
+  console.log("----- getStrikeDamage -----");
+  console.log(getStrikeDamage(20, 20, 5));
+  console.log(getStrikeDamage(20, 15, 5));
+  console.log(getStrikeDamage(20, 10, 5));
+  console.log(getStrikeDamage(20, 21, 5));
+  console.log(getStrikeDamage(20, 0, 5));
 })();
