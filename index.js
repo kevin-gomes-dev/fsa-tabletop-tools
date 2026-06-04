@@ -6,16 +6,7 @@
  * @returns {boolean} whether the wizard can cast the spell
  */
 function canCastSpell(isSpellPrepared, hasScroll) {
-  // No matter what, if have scroll, can cast
-  if (hasScroll) {
-    return true;
-  }
-  // If we're here, we don't have scroll. Need to know if prepared.
-  if (isSpellPrepared) {
-    return true;
-  }
-  // If we're here, we don't have scroll nor are prepared.
-  return false;
+  return hasScroll || isSpellPrepared;
 }
 
 /**
@@ -26,10 +17,7 @@ function canCastSpell(isSpellPrepared, hasScroll) {
  * @returns {boolean} whether the creature is hidden from the observer
  */
 function isHidden(hiding, aware) {
-  if (hiding || aware) {
-    return true;
-  }
-  return false;
+  return hiding || !aware;
 }
 
 /**
@@ -40,10 +28,7 @@ function isHidden(hiding, aware) {
  * @returns {boolean} whether the strike hits
  */
 function doesStrikeHit(attack, ac) {
-  if (attack >= ac) {
-    return true;
-  }
-  return false;
+  return attack >= ac;
 }
 
 /**
@@ -55,10 +40,7 @@ function doesStrikeHit(attack, ac) {
  */
 function doesStrikeCrit(attack, ac) {
   // attack: 32, AC: 20, expression 32 - 20 = 12, 12 >= 10 yes
-  if (attack - ac >= 10) {
-    return true;
-  }
-  return false;
+  return attack - ac >= 10;
 }
 
 /**
