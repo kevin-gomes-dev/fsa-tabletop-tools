@@ -147,7 +147,7 @@ function getRemainingHp(maxHp, currentHp, damage) {
  * @returns {boolean} whether the creature can see
  */
 function canSee(light, vision) {
-  // console.log(`light: ${light}, vision: ${vision}`);
+  console.log(`light: ${light}, vision: ${vision}`);
   if (vision === "dark" || light === "bright") {
     return true;
   }
